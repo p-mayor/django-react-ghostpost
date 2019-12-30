@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    'ghostpost_project.ghostpost_app',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

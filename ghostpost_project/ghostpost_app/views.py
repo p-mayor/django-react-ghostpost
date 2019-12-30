@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from ghostpost_project.ghostpost_app.serializers import UserSerializer, GroupSerializer
+from ghostpost_project.ghostpost_app.serializers import UserSerializer, GroupSerializer, PostSerializer
+
+from .models import Post
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -17,3 +19,10 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+class PostViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows posts to be viewed or edited.
+    """
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
