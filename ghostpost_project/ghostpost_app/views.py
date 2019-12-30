@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from ghostpost_project.ghostpost_app.serializers import UserSerializer, GroupSerializer, PostSerializer
-
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
+from rest_framework import viewsets
+
+from ghostpost_project.ghostpost_app.serializers import UserSerializer, GroupSerializer, PostSerializer
 
 from .models import Post
 
@@ -29,6 +30,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+@csrf_exempt
 def like(request, post_id):
     """
     Update the likes on a post.

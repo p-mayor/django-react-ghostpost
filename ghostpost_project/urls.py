@@ -11,5 +11,6 @@ router.register(r'posts', views.PostViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('vote/<int:post_id>', views.like, name='like')
 ]
