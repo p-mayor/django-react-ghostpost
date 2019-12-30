@@ -2,6 +2,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from ghostpost_project.ghostpost_app.serializers import UserSerializer, GroupSerializer, PostSerializer
 
+from django.http import HttpResponseRedirect
+
 from .models import Post
 
 
@@ -26,3 +28,13 @@ class PostViewSet(viewsets.ModelViewSet):
     """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+def like(request, post_id):
+    """
+    Update the likes on a post.
+    """
+    if request.method == 'POST':
+        post = Post.objects.get(pk=post_id)
+        post.likes += 1
+        post.save()
+        return HttpResponseRedirect('/')
