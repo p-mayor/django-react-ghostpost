@@ -48,3 +48,14 @@ def like(request, post_id):
         post.likes += 1
         post.save()
         return HttpResponseRedirect('/')
+
+@csrf_exempt
+def unlike(request, post_id):
+    """
+    Update the likes on a post.
+    """
+    if request.method == 'POST':
+        post = Post.objects.get(pk=post_id)
+        post.likes -= 1
+        post.save()
+        return HttpResponseRedirect('/')
