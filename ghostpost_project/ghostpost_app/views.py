@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
 from rest_framework import viewsets
+from rest_framework.parsers import JSONParser
 
 from ghostpost_project.ghostpost_app.serializers import UserSerializer, GroupSerializer, PostSerializer
 
@@ -38,6 +39,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+
 @csrf_exempt
 def like(request, post_id):
     """
@@ -59,21 +61,3 @@ def unlike(request, post_id):
         post.likes -= 1
         post.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-@csrf_exempt
-def post_list(request):
-    """
-    List all posts or create a post.
-    """
-    if request.method == 'GET':
-        posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = SnippetSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)

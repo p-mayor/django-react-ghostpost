@@ -15,7 +15,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('like/<int:post_id>', views.like, name='like'),
     path('unlike/<int:post_id>', views.unlike, name='unlike'),
-    path('postlist/', views.post_list, name='postlist'),
     path('admin/', admin.site.urls),
     path('csrf/', views.csrf),
     path('ping/', views.ping),
