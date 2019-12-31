@@ -38,6 +38,12 @@ class PostViewSet(viewsets.ModelViewSet):
     """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    def create(self, request):
+        if request.method == 'POST':
+            serializer = PostSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @csrf_exempt
