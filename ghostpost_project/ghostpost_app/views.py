@@ -47,7 +47,7 @@ def like(request, post_id):
         post = Post.objects.get(pk=post_id)
         post.likes += 1
         post.save()
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 @csrf_exempt
 def unlike(request, post_id):
@@ -58,4 +58,22 @@ def unlike(request, post_id):
         post = Post.objects.get(pk=post_id)
         post.likes -= 1
         post.save()
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+@csrf_exempt
+def post_list(request):
+    """
+    List all posts or create a post.
+    """
+    if request.method == 'GET':
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = SnippetSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
